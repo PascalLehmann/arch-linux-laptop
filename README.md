@@ -19,13 +19,13 @@ Zentrales Maschinen-Dashboard für den dedizierten Arch-Linux-Laptop **`thinkpad
 | **Swap** | 4 GiB **zram** (komprimiertes RAM-basiertes Swap, kein klassischer Swap auf SSD) |
 | **iGPU** | Intel UHD Graphics (TigerLake-H GT1) — Treiber `i915` (Kernel-Module `i915`, `xe`) |
 | **dGPU** | NVIDIA T1200 Laptop GPU (TU117GLM) — aktuell nur offener Platzhalter-Treiber `nouveau` geladen, **proprietärer Treiber noch nicht eingerichtet** (→ nächster Einrichtungsschritt) |
-| **Grafik-Topologie** | Hybrid-Grafik / Optimus (iGPU + dGPU parallel vorhanden) |
+| **Grafik-Topologie** | Hybrid-Grafik / Optimus (iGPU + dGPU parallel vorhanden). **Display-Routing live verifiziert (2026-10-18):** Das interne eDP-Panel hängt fest an der iGPU (`card2`, PCI `0000:00:02.0`), der physische externe HDMI-Port ist dagegen fest mit der dGPU verdrahtet (`card1`, PCI `0000:01:00.0`) — kein Display-Mux, aber für diesen Port auch kein PRIME-Offload-Umweg: Die dGPU gibt dort nativ selbst aus (`nvidia-smi`: `Disp.A: On`). Details siehe [nvidia-prime-hybrid-grafik.md](docs/01-drivers-hardware/nvidia-prime-hybrid-grafik.md). |
 | **WLAN** | Intel Wi-Fi 6E AX210 (802.11ax, 2x2, "Typhoon Peak") — Treiber `iwlwifi` |
 | **LAN** | Intel Ethernet Controller I225-LM (2,5 GbE) — Treiber `igc` |
 | **Audio** | Intel 500-Series HD Audio (SOF-Stack, Treiber `sof-audio-pci-intel-tgl`) + NVIDIA HDMI/DP-Audio (`snd_hda_intel`) |
 | **Card-Reader** | Realtek RTS525A (SD-Kartenleser) — Treiber `rtsx_pci` |
 | **Anschlüsse** | 2× Thunderbolt 4 (Intel TGL-H Controller) |
-| **Display** | Internes eDP-Panel (aktuell einziger `connected`-DRM-Connector; exakte Auflösung/Hz folgt nach Grafiktreiber-/Compositor-Einrichtung) |
+| **Display** | **Intern:** eDP-Panel (`eDP-1`, Chimei Innolux 0x150C), 1920×1080@60Hz, 340×190 mm, an Intel-iGPU. **Extern (2026-10-18 erstmals angeschlossen):** Samsung Odyssey G95SC (`HDMI-A-1`), aktuell 3840×1080@120Hz, an NVIDIA-dGPU; native Panel-Auflösung 5120×1440 nur mit max. 60Hz verfügbar (Bandbreiten-Tradeoff, Entscheidung zur finalen Konfiguration steht noch aus). |
 
 ### Storage-Layout & Dateisystem
 
@@ -76,7 +76,10 @@ Drei physische NVMe-SSDs, alle mit **Btrfs** formatiert:
 | 6b | 03-CLI | Neovim (Terminal-Texteditor) | [01-neovim.md](docs/03-cli-tools/01-neovim.md) | ⏳ Geplant | Nein | 2026-10-18 |
 | 5b | 02-Ricing | Mako (Notification-Daemon) | [02-mako.md](docs/02-desktop-ricing/02-mako.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
 | 5c | 02-Ricing | Hyprlauncher (App-Launcher) | [03-hyprlauncher.md](docs/02-desktop-ricing/03-hyprlauncher.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
-| 5d | 02-Ricing | Quickshell (Desktop-Shell-Toolkit) | [04-quickshell.md](docs/02-desktop-ricing/04-quickshell.md) | ✅ Aktiv & Stabil | Ja | 2026-10-18 |
+| 5d | 02-Ricing | Quickshell (Desktop-Shell-Toolkit) | [04-quickshell.md](docs/02-desktop-ricing/04-quickshell.md) | 🔧 In Einrichtung | Ja | 2026-10-18 |
+| 5e | 02-Ricing | SDDM-Theme "Clockwork" (qylock) | [05-sddm-theme-clockwork.md](docs/02-desktop-ricing/05-sddm-theme-clockwork.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
+| 5f | 02-Ricing | Statusbar-Modul: Akku-Anzeige (UPower) | [06-statusbar-akku.md](docs/02-desktop-ricing/06-statusbar-akku.md) | 🔧 In Einrichtung | Nein (Teil von `quickshell`) | 2026-10-18 |
+| 5g | 02-Ricing | Statusbar-Modul: Power-Button (Sleep/Logout/Reboot/Shutdown) | [07-statusbar-powerbutton.md](docs/02-desktop-ricing/07-statusbar-powerbutton.md) | 🔧 In Einrichtung | Nein (Teil von `quickshell`) | 2026-10-18 |
 | 7 | 04-Apps | Visual Studio Code | *(noch nicht angelegt)* | ⏳ Geplant | Nein | — |
 | 7b | 04-Apps | Dolphin (Dateimanager) | [01-dolphin.md](docs/04-applications/01-dolphin.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
 | 7c | 04-Apps | Vivaldi (Browser) | [02-browser-vivaldi.md](docs/04-applications/02-browser-vivaldi.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |

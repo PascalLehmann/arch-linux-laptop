@@ -1,42 +1,80 @@
-  import Quickshell   // Stellt die Quickshell-eigenen QML-Typen bereit (ShellRoot, PanelWindow, ...)
-  import QtQuick      // Stellt die Qt-Basis-Typen bereit (Text, Timer, ...)
+import Quickshell
+import QtQuick
+import Quickshell.Services.UPower
 
-  // ShellRoot ist der Wurzel-Knoten jeder Quickshell-Konfiguration — vergleichbar
-  // mit "ApplicationWindow" in normalen Qt-Apps, nur dass hier mehrere eigenständige
-  // Fenster (PanelWindows) als Kinder existieren können.
-  ShellRoot {
+ShellRoot {
+    Variants {
+        model: Quickshell.screens
 
-      // PanelWindow erzeugt ein Fenster über das Wayland-Protokoll "wlr-layer-shell"
-      // (das gleiche Protokoll, das auch mako für seine Benachrichtigungs-Overlays nutzt,
-      // siehe 02-mako.md) — es "klebt" an einer Bildschirmkante, statt ein normales,
-      // verschiebbares Fenster zu sein, und Hyprland reserviert dafür automatisch Platz.
-      PanelWindow {
-          anchors {
-              top:   true   // An der oberen Bildschirmkante andocken
-              left:  true   // ... über die volle Breite ...
-              right: true   // ... bis zur rechten Kante.
-          }
-          implicitHeight: 32      // Höhe der Bar in Pixeln
-          color: "#1e1e2e"        // Hintergrundfarbe (Platzhalter-Dark-Theme, später anpassbar)
+        PanelWindow {
+            id: panel
+            required property var modelData
+            screen: modelData
 
-          Text {
-              id: clockText
-              anchors.centerIn: parent
-              color: "#ffffff"
-              font.pixelSize: 16
-              // Erstbefüllung beim Start, bevor der Timer das erste Mal auslöst:
-              text: Qt.formatDateTime(new Date(), "ddd, dd.MM.yyyy hh:mm:ss")
-          }
+            anchors {
+                top:   true
+                left:  true
+                right: true
+            }
+            implicitHeight: 32
+            color: "#1e1e2e"
 
-          // Qt bringt keinen "lebenden" Uhr-Typ ohne Weiteres mit — ein Timer,
-          // der die Textanzeige jede Sekunde neu berechnet, ist der einfachste,
-          // von Quickshell-Version unabhängige Weg.
-          Timer {
-              interval: 1000   // Millisekunden
-              running: true
-              repeat: true
-              onTriggered: clockText.text = Qt.formatDateTime(new Date(), "ddd, dd.MM.yyyy hh:mm:ss")
-          }
-      }
-  }
+            Row {
+                id: leftSection
+                anchors.left: parent.left
+                anchors.leftMargin: 12
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 12
+            }
 
+            Row {
+                id: centerSection
+                anchors.centerIn: parent
+                spacing: 12
+
+                Text {
+                    id: clockText
+                    color: "#ffffff"
+                    font.pixelSize: 16
+                    text: Qt.formatDateTime(new Date(), "ddd, dd.MM.yyyy hh:mm:ss")
+                }
+            }
+
+            Row {
+                id: rightSection
+                anchors.right: parent.right
+                anchors.rightMargin: 12
+                anchors.verticalCenter: parent.verticalCenter
+		spacing: 12
+
+Text {
+    id: batteryText
+    color: "#ffffff"
+    font.pixelSize: 14
+    text: {
+        var dev = UPower.displayDevice
+        if (!dev.ready) return "…"
+        var pct = Math.round(dev.percentage * 100)
+        var stateLabel = ""
+        switch (dev.state) {
+            case UPowerDeviceState.Charging:         stateLabel = "Lädt"; break
+            case UPowerDeviceState.Discharging:      stateLabel = "Entlädt"; break
+            case UPowerDeviceState.FullyCharged:     stateLabel = "Voll"; break
+            case UPowerDeviceState.PendingCharge:    stateLabel = "Wartet (Laden)"; break
+            case UPowerDeviceState.PendingDischarge: stateLabel = "Wartet (Entladen)"; break
+            case UPowerDeviceState.Empty:             stateLabel = "Leer"; break
+            default:                                  stateLabel = "Unbekannt"; break
+        }
+        return pct + "% [" + stateLabel + "]"
+    }
+}            }
+
+            Timer {
+                interval: 1000
+                running: true
+                repeat: true
+                onTriggered: clockText.text = Qt.formatDateTime(new Date(), "ddd, dd.MM.yyyy hh:mm:ss")
+            }
+        }
+    }
+}
