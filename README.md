@@ -64,13 +64,26 @@ Drei physische NVMe-SSDs, alle mit **Btrfs** formatiert:
 | 1 | 00-Base | Claude Code CLI & TTY-Bootstrap | [01-claude-code-tty-bootstrap.md](docs/00-base-system/01-claude-code-tty-bootstrap.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
 | 2 | 00-Base | Git- & GNU-Stow-Grundlagen (Repo-Handbuch) | [how-to-use-git-and-stow.md](docs/00-base-system/how-to-use-git-and-stow.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
 | 3 | 00-Base | Partitionierung, Btrfs-Subvolumes & Bootloader | *(noch nicht angelegt)* | ⏳ Geplant | Nein | — |
-| 4 | 01-Hardware/Treiber | Proprietärer NVIDIA-Treiber (Optimus/PRIME, T1200) | *(noch nicht angelegt)* | ⏳ Geplant | Nein | — |
-| 5 | 02-Ricing | Hyprland (Wayland-Compositor) | *(noch nicht angelegt)* | ⏳ Geplant | Nein | — |
-| 6 | 03-CLI | Terminal-Emulator (Kitty oder Ghostty) | *(noch nicht angelegt)* | ⏳ Geplant | Nein | — |
+| 3b | 00-Base | Tastatur-Layout der virtuellen Konsole (vconsole) | [02-tastatur-layout-vconsole.md](docs/00-base-system/02-tastatur-layout-vconsole.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
+| 3c | 00-Base | Snapper (Btrfs-Snapshot-Automatisierung) | [03-snapper-btrfs-snapshots.md](docs/00-base-system/03-snapper-btrfs-snapshots.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
+| 4 | 01-Hardware/Treiber | Proprietärer NVIDIA-Treiber (Optimus/PRIME, T1200) | [nvidia-prime-hybrid-grafik.md](docs/01-drivers-hardware/nvidia-prime-hybrid-grafik.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
+| 4b | 01-Hardware/Treiber | Bluetooth (BlueZ-Stack) | [bluetooth.md](docs/01-drivers-hardware/bluetooth.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
+| 4c | 01-Hardware/Treiber | Audio-Stack (PipeWire) | [audio-pipewire.md](docs/01-drivers-hardware/audio-pipewire.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
+| 4d | 01-Hardware/Treiber | Power-Profiles-Daemon | [power-profiles-daemon.md](docs/01-drivers-hardware/power-profiles-daemon.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
+| 5 | 02-Ricing | Hyprland (Wayland-Compositor) | [01-hyprland.md](docs/02-desktop-ricing/01-hyprland.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
+| 6 | 03-CLI | Terminal-Emulator (Kitty & Ghostty, Testphase) | [02-terminal-emulator.md](docs/03-cli-tools/02-terminal-emulator.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
+| 6b | 03-CLI | Neovim (Terminal-Texteditor) | [01-neovim.md](docs/03-cli-tools/01-neovim.md) | ⏳ Geplant | Nein | 2026-10-18 |
+| 5b | 02-Ricing | Mako (Notification-Daemon) | [02-mako.md](docs/02-desktop-ricing/02-mako.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
+| 5c | 02-Ricing | Hyprlauncher (App-Launcher) | [03-hyprlauncher.md](docs/02-desktop-ricing/03-hyprlauncher.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
+| 5d | 02-Ricing | Quickshell (Desktop-Shell-Toolkit) | [04-quickshell.md](docs/02-desktop-ricing/04-quickshell.md) | ✅ Aktiv & Stabil | Ja | 2026-10-18 |
 | 7 | 04-Apps | Visual Studio Code | *(noch nicht angelegt)* | ⏳ Geplant | Nein | — |
-| — | 05-Services | *(keine Einträge)* | — | — | — | — |
+| 7b | 04-Apps | Dolphin (Dateimanager) | [01-dolphin.md](docs/04-applications/01-dolphin.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
+| 8 | 05-Services | OpenSSH-Server (Fernzugriff) | [01-ssh-server.md](docs/05-system-services/01-ssh-server.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
+| 9 | 05-Services | Netzwerk-Stack (systemd-networkd + iwd) | [02-netzwerk-stack.md](docs/05-system-services/02-netzwerk-stack.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
+| 10 | 05-Services | CUPS (Druckerverwaltung) | [03-cups-druckerverwaltung.md](docs/05-system-services/03-cups-druckerverwaltung.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
+| 11 | 05-Services | Firewall (nftables) | [04-firewall-nftables.md](docs/05-system-services/04-firewall-nftables.md) | ⏳ Geplant | Nein | 2026-10-18 |
 
-**Status-Legende:** `Geplant` → Thema erfasst, noch nicht begonnen · `In Einrichtung` → Phase 1–4 unseres 5-Phasen-Zyklus laufen · `Aktiv & Stabil` → verifiziert und abgeschlossen · `Veraltet/Ersetzt` → durch neuere Lösung abgelöst.
+**Status-Legende:** ⏳ `Geplant` → Thema erfasst, noch nicht begonnen · 🔧 `In Einrichtung` → Phase 1–4 unseres 5-Phasen-Zyklus laufen · ✅ `Aktiv & Stabil` → verifiziert und abgeschlossen · 🗑️ `Veraltet/Ersetzt` → durch neuere Lösung abgelöst.
 
 ### Nächste Schritte (Roadmap zur grafischen Oberfläche)
 
