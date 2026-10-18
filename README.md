@@ -66,6 +66,7 @@ Drei physische NVMe-SSDs, alle mit **Btrfs** formatiert:
 | 3 | 00-Base | Partitionierung, Btrfs-Subvolumes & Bootloader | *(noch nicht angelegt)* | ⏳ Geplant | Nein | — |
 | 3b | 00-Base | Tastatur-Layout der virtuellen Konsole (vconsole) | [02-tastatur-layout-vconsole.md](docs/00-base-system/02-tastatur-layout-vconsole.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
 | 3c | 00-Base | Snapper (Btrfs-Snapshot-Automatisierung) | [03-snapper-btrfs-snapshots.md](docs/00-base-system/03-snapper-btrfs-snapshots.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
+| 3d | 00-Base | yay (AUR-Helper) | [04-yay-aur-helper.md](docs/00-base-system/04-yay-aur-helper.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
 | 4 | 01-Hardware/Treiber | Proprietärer NVIDIA-Treiber (Optimus/PRIME, T1200) | [nvidia-prime-hybrid-grafik.md](docs/01-drivers-hardware/nvidia-prime-hybrid-grafik.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
 | 4b | 01-Hardware/Treiber | Bluetooth (BlueZ-Stack) | [bluetooth.md](docs/01-drivers-hardware/bluetooth.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
 | 4c | 01-Hardware/Treiber | Audio-Stack (PipeWire) | [audio-pipewire.md](docs/01-drivers-hardware/audio-pipewire.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
@@ -78,6 +79,9 @@ Drei physische NVMe-SSDs, alle mit **Btrfs** formatiert:
 | 5d | 02-Ricing | Quickshell (Desktop-Shell-Toolkit) | [04-quickshell.md](docs/02-desktop-ricing/04-quickshell.md) | ✅ Aktiv & Stabil | Ja | 2026-10-18 |
 | 7 | 04-Apps | Visual Studio Code | *(noch nicht angelegt)* | ⏳ Geplant | Nein | — |
 | 7b | 04-Apps | Dolphin (Dateimanager) | [01-dolphin.md](docs/04-applications/01-dolphin.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
+| 7c | 04-Apps | Vivaldi (Browser) | [02-browser-vivaldi.md](docs/04-applications/02-browser-vivaldi.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
+| 7d | 04-Apps | Zen Browser | [03-browser-zen.md](docs/04-applications/03-browser-zen.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
+| 7e | 04-Apps | Tor Browser (torbrowser-launcher) | [04-browser-tor.md](docs/04-applications/04-browser-tor.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
 | 8 | 05-Services | OpenSSH-Server (Fernzugriff) | [01-ssh-server.md](docs/05-system-services/01-ssh-server.md) | 🔧 In Einrichtung | Nein | 2026-10-18 |
 | 9 | 05-Services | Netzwerk-Stack (systemd-networkd + iwd) | [02-netzwerk-stack.md](docs/05-system-services/02-netzwerk-stack.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
 | 10 | 05-Services | CUPS (Druckerverwaltung) | [03-cups-druckerverwaltung.md](docs/05-system-services/03-cups-druckerverwaltung.md) | ✅ Aktiv & Stabil | Nein | 2026-10-18 |
