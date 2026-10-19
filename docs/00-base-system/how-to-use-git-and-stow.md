@@ -3,7 +3,7 @@
 - **Maschine / Hostname:** thinkpad
 - **Kategorie:** 00-Base
 - **Status:** Aktiv & Stabil
-- **Letztes Update:** 2026-10-18
+- **Letztes Update:** 2026-10-19
 - **Verwandte Dokumentation:** [README.md](../../README.md), [01-claude-code-tty-bootstrap.md](./01-claude-code-tty-bootstrap.md)
 
 ---
@@ -140,6 +140,36 @@ git remote set-url origin https://git.<deine-domain>.tld/<user>/arch-linux-lapto
 - Überschreibt die hinterlegte URL für den Remote-Namen `origin`, **ohne** dass der Alias `origin` selbst umbenannt werden muss. Alle lokalen Branches, die bereits auf `origin` "tracken" (verfolgen), zeigen danach automatisch auf den neuen Server.
 - Nach der Umstellung einmalig prüfen mit `git remote -v`, anschließend testen mit `git push origin main` (bzw. `git fetch origin`), ob Authentifizierung und Verbindung zum neuen Server funktionieren.
 - **Wichtig:** Die lokale Commit-Historie (`.git/`-Ordner) ist davon komplett unberührt — es wird nur der *Ziel-Server* für zukünftige `push`/`pull`-Vorgänge geändert.
+
+### SSH statt HTTPS für den Remote-Zugriff (bereits für GitHub umgesetzt)
+
+Unabhängig vom Ziel-Server (GitHub oder später Self-Hosted) unterscheidet Git zusätzlich **zwei Transport-Protokolle**, über die eine Remote-URL angesprochen werden kann. Beide sind komplett unabhängig vom eigentlichen Server-Wechsel aus dem vorigen Abschnitt:
+
+| Protokoll | URL-Format | Authentifizierung |
+|---|---|---|
+| HTTPS | `https://github.com/<user>/<repo>.git` | Benutzername + Personal Access Token (oder Credential-Helper) |
+| SSH | `git@github.com:<user>/<repo>.git` | Privater SSH-Key aus `~/.ssh/` |
+
+**Umstellung von HTTPS auf SSH** (genau derselbe Befehl wie bei der Server-Migration — nur ändert sich das Protokoll in der URL, nicht der Server):
+```bash
+git remote set-url origin git@github.com:<user>/<repo>.git
+```
+
+**Verifizierung der SSH-Authentifizierung**, bevor man sich auf einen `push` verlässt:
+```bash
+ssh -T git@github.com
+```
+- `-T`: Unterdrückt die Zuweisung eines Pseudo-Terminals, da wir hier keine interaktive Shell auf GitHubs Servern brauchen, sondern lediglich sehen wollen, ob der SSH-Handshake (Schlüssel-Authentifizierung) erfolgreich war.
+- Erwartete Ausgabe bei Erfolg: `Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.` — die Fehlermeldung "no shell access" ist hierbei **kein** Problem, sondern exakt das erwartete Verhalten, da GitHub über SSH bewusst nur Git-Operationen, keinen echten Login erlaubt.
+
+**Passphrase-Caching mit `ssh-agent`:** Ist der private Schlüssel (wie empfohlen) zusätzlich mit einer Passphrase verschlüsselt, fragt Git bei *jedem* `push`/`pull`/`fetch` erneut danach. Um die Passphrase nur einmal pro Login-Session einzugeben:
+```bash
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519_github
+```
+- `ssh-agent -s`: Startet einen Hintergrund-Prozess (*Daemon*), der entschlüsselte private Schlüssel ausschließlich im Arbeitsspeicher vorhält — die Passphrase selbst wird dabei nirgends auf der Festplatte gespeichert. `-s` lässt den Agent seine Umgebungsvariablen (`SSH_AUTH_SOCK`, `SSH_AGENT_PID`) im Bourne-Shell-Format ausgeben; `eval "$(...)"` übernimmt diese direkt in die aktuelle Shell-Sitzung, damit nachfolgende SSH-Aufrufe den Agent überhaupt finden.
+- `ssh-add`: Entschlüsselt den angegebenen Key einmalig (einzige Passphrase-Abfrage) und übergibt den entschlüsselten Schlüssel an den laufenden Agent-Prozess.
+- Danach nutzt jeder `git push`/`git pull` in dieser Terminal-Sitzung automatisch den im Agent zwischengespeicherten Schlüssel, ohne erneute Passphrase-Eingabe — bis der Agent-Prozess endet (z. B. beim Logout oder Neustart).
 
 ## 6. GNU Stow Deep-Dive
 
